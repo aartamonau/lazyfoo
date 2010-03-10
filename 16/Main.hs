@@ -104,7 +104,7 @@ main = do
         | otherwise    = return False
 
   let beat = repeatedly ticksPerFrame ()
-  reactimate' init sense (uncurry actuate) (velocity beat &&& beat)
+  reactimate' init sense (uncurry actuate) (dot beat &&& beat)
 
   quit
 
@@ -118,8 +118,8 @@ main = do
 
         defaultInput = Input NoEvent NoEvent False
 
-velocity :: SF () (Event ()) -> SF Input (Maybe Dot)
-velocity beat =
+dot :: SF () (Event ()) -> SF Input (Maybe Dot)
+dot beat =
   proc input@(Input down up closed) -> do
     let leftD  = filterE (== LeftKey) down
     let leftU  = filterE (== LeftKey) up
