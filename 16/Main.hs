@@ -3,24 +3,19 @@
 module Main -- ( main )
        where
 
-import Debug.Trace
-
-
-import Control.Applicative (pure, (<*>), (<$>))
-import Control.Arrow (Arrow, (***), (&&&), (>>>), returnA, arr)
+import Control.Arrow (Arrow, (&&&), returnA)
 import Control.Concurrent (threadDelay)
-import Control.Monad (forM_, when)
+import Control.Monad (when)
 
-import Data.Either (either)
 import Data.Function (fix)
 import qualified Data.Map as M
 import Data.Maybe (isNothing)
 
 import FRP.Yampa (Event(..), SF,
                   isEvent,
-                  tag, lMerge, rMerge, mergeBy, hold,
+                  tag, rMerge, hold,
                   dAccumHoldBy, repeatedly,
-                  constant, reactimate, filterE)
+                  reactimate, filterE)
 
 import qualified Graphics.UI.SDL as SDL
 
@@ -29,11 +24,6 @@ import System (exitWith, ExitCode(ExitSuccess))
 
 import qualified Timer
 import SDLUtils (loadImage, setColorKey)
-import Utils (takeWhileM)
-
-instance Show a => Show (Event a) where
-  show (Event a) = "Event " ++ show a
-  show NoEvent   = "NoEvent"
 
 data ArrowKey = UpKey | DownKey | LeftKey | RightKey
               deriving (Show, Eq)
@@ -43,10 +33,8 @@ data Input =
         , keyUp   :: Event ArrowKey
         , closed  :: Bool
         }
-  deriving Show
 
 data Dot = Dot Int Int
-         deriving Show
 
 data Context =
   Context { c_screen  :: SDL.Surface
@@ -102,7 +90,7 @@ main = do
           when (isNothing input) $
             threadDelay 10000
 
-          time <-((/1000) . fromIntegral) <$> Timer.getTicks timer
+          time <- fmap ((/1000) . fromIntegral) (Timer.getTicks timer)
           Timer.stop timer
           Timer.start timer
 
