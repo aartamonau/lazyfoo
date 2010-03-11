@@ -1,6 +1,6 @@
 {-# LANGUAGE Arrows #-}
 
-module Main -- ( main )
+module Main ( main )
        where
 
 import Control.Arrow (Arrow, (&&&), returnA)
@@ -45,8 +45,12 @@ screenWidth     = 640
 screenHeight    = 480
 screenBPP       = 32
 
-dotWidth        = 20
-dotHeight       = 20
+dotD            = 20
+dotR            = dotD `div` 2
+
+-- dot's position at the beginning
+dotX            = dotR
+dotY            = dotR
 
 framesPerSecond = 30
 ticksPerFrame   = 1 / framesPerSecond
@@ -139,16 +143,16 @@ dot beat =
     beat' <- beat -< ()
 
     rec
-      bvl <- bound 0 (>)            -< (x, vl)
-      bvr <- bound screenWidth (<)  -< (x, vr)
-      bvu <- bound 0 (>)            -< (y, vu)
-      bvd <- bound screenHeight (<) -< (y, vd)
+      bvl <- boundG 0            -< (x, vl)
+      bvr <- boundL screenWidth  -< (x, vr)
+      bvu <- boundG 0            -< (y, vu)
+      bvd <- boundL screenHeight -< (y, vd)
 
       let vx = bvr - bvl
       let vy = bvd - bvu
 
-      x <- dAccumHoldBy (+) 0 -< beat' `tag` vx
-      y <- dAccumHoldBy (+) 0 -< beat' `tag` vy
+      x <- dAccumHoldBy (+) dotX -< beat' `tag` vx
+      y <- dAccumHoldBy (+) dotY -< beat' `tag` vy
 
     returnA -< if closed then Nothing else Just (Dot x y)
 
@@ -157,6 +161,12 @@ dot beat =
               hold 0 -< activate `tag` 10
                         `rMerge`
                         deactivate `tag` 0
+
+        boundL :: Int -> SF (Int, Int) Int
+        boundL b = bound (b - dotR) (<)
+
+        boundG :: Int -> SF (Int, Int) Int
+        boundG b = bound (b + dotR) (>)
 
         bound :: Int -> (Int -> Int -> Bool) -> SF (Int, Int) Int
         bound b pf =
@@ -172,6 +182,4 @@ renderDot (Context screen white dot) (Dot x y) = do
   where fillBg         = SDL.fillRect screen Nothing white
         drawDot x y =
           SDL.blitSurface dot Nothing
-                          screen (Just $ SDL.Rect (x - dx) (y - dy) 0 0)
-        dx             = dotWidth `div` 2
-        dy             = dotHeight `div` 2
+                          screen (Just $ SDL.Rect (x - dotR) (y - dotR) 0 0)
