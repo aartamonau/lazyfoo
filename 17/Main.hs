@@ -165,8 +165,8 @@ square beat =
         avoidCollision :: SF ((Int, Int), (Int, Int)) (Int, Int)
         avoidCollision =
           proc ((x, y), (vx, vy)) -> do
-            let rvx = if hasWallCollision (x + vx, y) then 0 else vx
-            let rvy = if hasWallCollision (x, y + vy) then 0 else vy
+            let rvx = if hasWallCollision (x + vx,  y) then 0 else vx
+            let rvy = if hasWallCollision (x + rvx, y + vy) then 0 else vy
 
             returnA -< (rvx, rvy)
 
