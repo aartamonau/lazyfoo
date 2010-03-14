@@ -8,7 +8,6 @@ import Control.Concurrent (threadDelay)
 import Control.Monad (when)
 
 import Data.Function (fix)
-import Data.List (scanl)
 import qualified Data.Map as M
 import Data.Maybe (isNothing)
 
