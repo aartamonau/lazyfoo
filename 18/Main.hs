@@ -60,7 +60,7 @@ data Input =
 data GContext =
   GContext { c_screen    :: SDL.Surface
            , c_bgColor   :: SDL.Pixel
-           , c_square    :: SDL.Surface }
+           , c_dot       :: SDL.Surface }
 
 initSDL :: IO GContext
 initSDL = do
