@@ -121,8 +121,6 @@ main = do
   let actuate Nothing                              _       = return True
       actuate _                                    NoEvent = return False
       actuate (Just figure@(Figure direction _ _)) _       = do
-        print figure
-
         renderScreen screen sprite figure
         return False
 
