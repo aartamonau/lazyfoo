@@ -7,7 +7,6 @@ import Control.Arrow (returnA, arr, (&&&), (>>>))
 import Control.Concurrent (threadDelay)
 import Control.Monad (when)
 
-import Data.Function (fix)
 import qualified Data.Map as M
 import Data.Maybe (isNothing)
 
@@ -99,32 +98,31 @@ main = do
   let init  = Timer.start timer >> return (Input NoEvent NoEvent False)
 
   let sense = do
-        fix $ \loop -> do
-          event <- SDL.pollEvent
+        event <- SDL.pollEvent
 
-          let input =
-                case event of
-                  SDL.Quit           -> Just $ Input NoEvent NoEvent True
-                  SDL.KeyDown keysym ->
-                    case handleKeysym keysym of
-                      Just arrow -> Just $ Input (Event arrow) NoEvent False
-                      _          -> Nothing
-                  SDL.KeyUp keysym ->
-                    case handleKeysym keysym of
-                      Just arrow -> Just $ Input NoEvent (Event arrow) False
-                      _          -> Nothing
-                  _                  -> Nothing
+        let input =
+              case event of
+                SDL.Quit           -> Just $ Input NoEvent NoEvent True
+                SDL.KeyDown keysym ->
+                  case handleKeysym keysym of
+                    Just arrow -> Just $ Input (Event arrow) NoEvent False
+                    _          -> Nothing
+                SDL.KeyUp keysym ->
+                  case handleKeysym keysym of
+                    Just arrow -> Just $ Input NoEvent (Event arrow) False
+                    _          -> Nothing
+                _                  -> Nothing
 
-          when (isNothing input) $
-            threadDelay 10000
+        when (isNothing input) $
+          threadDelay 10000
 
-          time <- fmap ((/1000) . fromIntegral) (Timer.getTicks timer)
-          Timer.stop timer
-          Timer.start timer
+        time <- fmap ((/1000) . fromIntegral) (Timer.getTicks timer)
+        Timer.stop timer
+        Timer.start timer
 
-          if isNothing input
-            then return (time, Just defaultInput)
-            else return (time, input)
+        if isNothing input
+          then return (time, Just defaultInput)
+          else return (time, input)
 
   let actuate Nothing _  = return True
       actuate (Just dot) beat
