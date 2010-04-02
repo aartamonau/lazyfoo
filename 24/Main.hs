@@ -1,4 +1,4 @@
-{-# LANGUAGE Arrows, PatternGuards, ViewPatterns #-}
+{-# LANGUAGE Arrows #-}
 
 module Main (main)
        where
