@@ -8,7 +8,7 @@ import Control.Concurrent (threadDelay)
 import Control.Monad (when)
 
 import Data.Maybe (isNothing)
-import Data.Word (Word8, Word8, Word8)
+import Data.Word (Word8)
 
 import FRP.Yampa (Event(..), SF,
                   filterE, tag, repeatedly,
