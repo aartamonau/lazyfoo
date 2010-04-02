@@ -103,8 +103,7 @@ main = do
           threadDelay 10000
 
         time <- fmap ((/1000) . fromIntegral) (Timer.getTicks timer)
-        Timer.stop timer
-        Timer.start timer
+        Timer.restart timer
 
         if isNothing input
           then return (time, Just defaultInput)
