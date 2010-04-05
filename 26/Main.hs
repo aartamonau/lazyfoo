@@ -3,12 +3,9 @@ module Main (main)
 
 import Control.Applicative ((<$>), (<*>))
 import Control.Arrow ((&&&))
-import Control.Monad (forM_, when)
 import Control.Monad.Reader (ReaderT (..), runReaderT, ask, asks)
 import Control.Monad.State (StateT (..), evalStateT, get, gets, put)
 import Control.Monad.Trans (MonadIO, liftIO)
-
-import Data.Function (fix)
 
 import qualified Graphics.UI.SDL as SDL
 
