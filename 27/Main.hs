@@ -3,8 +3,6 @@
 module Main (main)
        where
 
-import Debug.Trace
-
 import Data.Word (Word8)
 
 import Control.Arrow ((&&&), returnA)
@@ -144,6 +142,3 @@ alpha beat =
           handleKeys down up alpha = vd + vu
             where vd = if down && alpha > alphaTransparent then -5 else 0
                   vu = if up && alpha < alphaOpaque then 5 else 0
-
-          trace' a = traceShow a a
-          traceMsg msg a = trace (msg ++ " :" ++ show a) a
