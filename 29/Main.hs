@@ -1,6 +1,6 @@
 {-# LANGUAGE Arrows #-}
 
-module Main ()
+module Main ( main )
        where
 
 
