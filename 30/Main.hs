@@ -36,7 +36,6 @@ main = do
   screen <- initSDL
 
   font <- createFromFile "lazyfont.png"
-  -- showText font "Bitmap Font:\ntest test testA" screen 0 0
   showText font "Bitmap Font:\nABDCEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789"
            screen 100 100
   SDL.flip screen

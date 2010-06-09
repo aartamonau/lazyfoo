@@ -45,11 +45,4 @@ getPixel surface x y = do
   let offset = y * width + x
 
   pixels <- fmap unsafeCoerce $ SDL.surfaceGetPixels surface
-  r <- fmap SDL.Pixel $ peekElemOff pixels offset
-
-  -- print "-------"
-  -- print (x, y)
-  -- print r
-  -- print "-------"
-
-  return r
+  fmap SDL.Pixel $ peekElemOff pixels offset

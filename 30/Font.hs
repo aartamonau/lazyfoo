@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Font -- ( Font, createFromFile, create, showText )
+module Font ( Font, createFromFile, create, showText )
        where
 
 
